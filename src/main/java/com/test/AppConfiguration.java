@@ -1,5 +1,7 @@
 package com.test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -11,27 +13,45 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 public class AppConfiguration {
 
-	@Bean
-	public InternalResourceViewResolver resolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/jsp/");
-		resolver.setSuffix(".jsp");
-		return resolver;
-	}
 
 	@Bean
-	public DataSource dataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setUrl("jdbc:hsqldb:mem:test");
-		dataSource.setUsername("sa");
-		dataSource.setPassword("");
-		return dataSource;
-	}
+	public BasicDataSource dataSource() throws URISyntaxException {
+		/*BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setUrl("jdbc:postgresql://ec2-50-16-190-77.compute-1.amazonaws.com:5432/d9v2aol7oe1v51?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory");
+		dataSource.setUsername("pxdxyrsduewvbf");
+		dataSource.setPassword("yk41xyT2RCfSkMxa_kDZnFUSQl");
+		return dataSource;*/
+		
+		URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://ec2-50-16-190-77.compute-1.amazonaws.com:5432/d9v2aol7oe1v51?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername("pxdxyrsduewvbf");
+        basicDataSource.setPassword("yk41xyT2RCfSkMxa_kDZnFUSQl");
+        return basicDataSource;
+
+
+/*		URI dbUri = new URI(System.getenv("DB_URL"));
+		 	//System.out.println(dbUri.toString());
+	        String username = dbUri.getUserInfo().split(":")[0];
+	        String password = dbUri.getUserInfo().split(":")[1];
+	        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath()+"?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+
+	        BasicDataSource basicDataSource = new BasicDataSource();
+	        basicDataSource.setUrl(dbUrl);
+	        basicDataSource.setUsername(username);
+	        basicDataSource.setPassword(password);
+
+	     return basicDataSource;
+*/	}
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
@@ -40,8 +60,10 @@ public class AppConfiguration {
 		emf.setPackagesToScan("com.test.entity");
 		emf.setPersistenceProvider(new HibernatePersistenceProvider());
 		Properties jpaProperties = new Properties();
+		jpaProperties.setProperty("driverClassName", "org.postgresql.Driver");
 		jpaProperties.setProperty("hibernate.hbm2ddl.auto", "create");
 		jpaProperties.setProperty("hibernate.show_sql", "true");
+		jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");	
 		emf.setJpaProperties(jpaProperties);
 		emf.setDataSource(dataSource);
 		return emf;

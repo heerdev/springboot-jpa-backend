@@ -1,0 +1,15 @@
+com\test\AppConfiguration.class
+com\test\service\CustomerService.class
+com\test\Application.class
+com\test\controller\IndexController.class
+com\test\controller\TasksController.class
+com\test\service\InitDbService.class
+com\test\repository\CustomerRepository.class
+com\test\repository\UsersRepositoty.class
+com\test\entity\Customer.class
+com\test\entity\Tasks.class
+com\test\service\UsersService.class
+com\test\service\TaskService.class
+com\test\entity\Users.class
+com\test\repository\TaskRepository.class
+com\test\controller\CustomersController.class
