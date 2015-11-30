@@ -26,7 +26,7 @@ public class AppConfiguration {
 		dataSource.setPassword("yk41xyT2RCfSkMxa_kDZnFUSQl");
 		return dataSource;*/
 		
-		URI dbUri = new URI(System.getenv("DATABASE_URL"));
+/*		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
@@ -34,12 +34,12 @@ public class AppConfiguration {
 
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setUrl(dbUrl);
-        basicDataSource.setUsername("pxdxyrsduewvbf");
-        basicDataSource.setPassword("yk41xyT2RCfSkMxa_kDZnFUSQl");
+        basicDataSource.setUsername("");
+        basicDataSource.setPassword("");
         return basicDataSource;
+*/
 
-
-/*		URI dbUri = new URI(System.getenv("DB_URL"));
+		URI dbUri = new URI(System.getenv("DB_URL"));
 		 	//System.out.println(dbUri.toString());
 	        String username = dbUri.getUserInfo().split(":")[0];
 	        String password = dbUri.getUserInfo().split(":")[1];
@@ -51,7 +51,7 @@ public class AppConfiguration {
 	        basicDataSource.setPassword(password);
 
 	     return basicDataSource;
-*/	}
+	}
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
